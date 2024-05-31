@@ -1,13 +1,18 @@
 NAME := phonebook
 
-SRC := phonebook.cpp
+SRC := main.cpp phonebook.cpp getSetContact.cpp
 
-FLAGS := -Wall -Wextra -Werror -std=c++98
+FLAGS := -g3 -Wall -Wextra -Werror -std=c++98
 
 $(NAME): $(SRC)
-	c++ $(FLAGS) -o $(NAME) $(SRC)
+	@c++ $(FLAGS) -o $(NAME) $(SRC)
 
 clean:
-	rm -f $(NAME)
+	@rm -f $(NAME)
 
-.PHONY: clean
+re: clean $(NAME)
+
+gdb: re
+	@gnome-terminal --maximize -- bash -c "sleep 0.3; gdb --tui ./$(NAME)"
+
+.PHONY: clean re

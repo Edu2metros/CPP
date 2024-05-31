@@ -1,52 +1,6 @@
-#include <iostream>
-#include <string>
-
-class Weapon
-{
-private:
-	std::string type;
-
-public:
-	Weapon() : type("") {}
-	Weapon(const std::string& name) : type(name){}
-	
-	const std::string getType(void){
-		return(this->type);
-	}
-
-	void setType(const std::string& name){
-		this->type = name;
-	}
-};
-
-class HumanA
-{
-public:
-	std::string name;
-	Weapon& weapon;
-
-	HumanA(const std::string& name, Weapon& type) : name(name), weapon(type) {}
-
-	void attack(void){
-		std::cout << name << " attacks with their " << weapon.getType() << std::endl;
-	}
-};
-
-class HumanB
-{
-public:
-	std::string name;
-	Weapon *weapon;
-
-	HumanB(const std::string& name) : name(name){}
-
-	void attack(void){
-		std::cout << name << " attacks with their " << weapon->getType() << std::endl;
-	}
-	void setWeapon(Weapon &new_weapon){
-		this->weapon = &new_weapon;
-	}
-};
+#include "Weapon.hpp"
+#include "HumanA.hpp"
+#include "HumanB.hpp"
 
 int main(void)
 {

@@ -2,6 +2,6 @@
 
 void randomChump(std::string name)
 {
-	Zombie new_zombie(name);
-	new_zombie.PrintZombie();
+	Zombie Zombie(name);
+	Zombie.PrintZombie();
 }

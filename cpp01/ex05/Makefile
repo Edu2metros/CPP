@@ -1,6 +1,6 @@
-NAME := Violence
+NAME := harl
 
-SRC := main.cpp HumanA.cpp HumanB.cpp Weapon.cpp
+SRC := main.cpp Harl.cpp
 
 FLAGS := -Wall -Wextra -Werror -std=c++98
 

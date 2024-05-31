@@ -1,80 +1,53 @@
-#include "phonebook.hpp"
+#include "includes/contact.hpp"
+#include "includes/phonebook.hpp"
 
-std::string truncateString(const std::string &str, int width)
+void Phonebook::addContact(const std::string &name, const std::string &last_name, const std::string &nickname,
+					const std::string &phoneNumber, const std::string &darkestSecret)
 {
-	if (str.length() > static_cast<std::string::size_type>(width))
-		return (str.substr(0, width - 1) + ".");
+	contacts[index].setName(name);
+	contacts[index].setLastName(last_name);
+	contacts[index].setNickname(nickname);
+	contacts[index].setPhoneNumber(phoneNumber);
+	contacts[index].setDarkestSecret(darkestSecret);
+	index = (index + 1) % 8;
+	if (size < 8)
+		size++;
+}
+
+void Phonebook::searchContact(void) const
+{
+	if (size == 0)
+	{
+		std::cout << "Phonebook is empty." << std::endl;
+		return;
+	}
+	std::cout << std::right << std::setw(10) << "Index" << " | "
+				<< std::setw(10) << "First Name" << " | "
+				<< std::setw(10) << "Last Name" << " | "
+				<< std::setw(10) << "Nickname" << std::endl;
+	for (int i = 0; i < size; i++)
+	{
+		std::cout << std::right << std::setw(10) << i + 1 << " | "
+					<< std::setw(10) << truncateString(contacts[i].getName()) << " | "
+					<< std::setw(10) << truncateString(contacts[i].getLastName()) << " | "
+					<< std::setw(10) << truncateString(contacts[i].getNickname()) << std::endl;
+	}
+	int index;
+	std::cout << "Enter the index of the contact you want to display: ";
+	std::cin >> index;
+
+	if (std::cin.fail() || index < 1 || index > size)
+	{
+		std::cin.clear();
+		std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+		std::cout << "Invalid index. Please enter a valid index." << std::endl;
+	}
 	else
-		return (str);
-}
-
-bool	phoneNumberValid(const std::string &phoneNumber)
-{
-	if (phoneNumber.empty())
-		return (false);
-	for (std::string::size_type i = 0; i < phoneNumber.size(); i++)
 	{
-		if (!isdigit(phoneNumber[i]))
-			return (false);
+		std::cout << "First Name: " << contacts[index - 1].getName() << std::endl;
+		std::cout << "Last Name: " << contacts[index - 1].getLastName() << std::endl;
+		std::cout << "Nickname: " << contacts[index - 1].getNickname() << std::endl;
+		std::cout << "Phone Number: " << contacts[index - 1].getPhoneNumber() << std::endl;
+		std::cout << "Darkest Secret: " << contacts[index - 1].getDarkestSecret() << std::endl;
 	}
-	return (true);
-}
-
-void	addcontact(Phonebook &phone)
-{
-	std::string name, last_name, nickname, phoneNumber, darkestSecret;
-	std::cout << "Enter first name: ";
-	std::getline(std::cin, name);
-	if (name.empty())
-	{
-		std::cout << "First name cannot be empty" << std::endl;
-		return ;
-	}
-	std::cout << "Enter Last name: ";
-	std::getline(std::cin, last_name);
-	if (last_name.empty())
-	{
-		std::cout << "Last name cannot be empty" << std::endl;
-		return ;
-	}
-	std::cout << "Enter nickname: ";
-	std::getline(std::cin, nickname);
-	if (nickname.empty())
-	{
-		std::cout << "Nickname cannot be empty" << std::endl;
-		return ;
-	}
-	std::cout << "Enter Darkest Secret: ";
-	std::getline(std::cin, darkestSecret);
-	if (darkestSecret.empty())
-	{
-		std::cout << "Darkest Secret cannot be empty" << std::endl;
-		return ;
-	}
-	std::cout << "Enter Phone Number: ";
-	std::getline(std::cin, phoneNumber);
-	if (phoneNumberValid(phoneNumber) == false)
-	{
-		std::cout << "Phone number is invalid" << std::endl;
-		return ;
-	}
-	phone.addContact(name, last_name, nickname, phoneNumber, darkestSecret);
-}
-
-int	main(void)
-{
-	std::string line;
-	Phonebook phonebook;
-	while (true)
-	{
-		std::cout << "Enter a command: (add, search, exit): ";
-		std::getline(std::cin, line);
-		if (line == "ADD" || line == "add")
-			addcontact(phonebook);
-		else if (line == "SEARCH" || line == "search")
-			phonebook.searchContact();
-		else if (line == "EXIT" || line == "exit")
-			break ;
-	}
-	return (0);
 }
