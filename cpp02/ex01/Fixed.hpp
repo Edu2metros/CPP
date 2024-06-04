@@ -1,3 +1,5 @@
+#include <iostream>
+
 #ifndef FIXED_HPP
 #define FIXED_HPP
 
@@ -5,7 +7,7 @@ class Fixed
 {
 	private:
 	int value;
-	static const int bits;
+	static const int bits = 8;
 
 	public:
 	
@@ -21,13 +23,15 @@ class Fixed
 
 	// copy assign operator
 	Fixed& operator=(const Fixed& other);
-	
+
 	// destructor
 	~Fixed();
-
 	int getRawBits( void ) const;
 	void setRawBits( int const raw );
-	static void teste(void);
+	float toFloat(void) const;
+	int toInt(void) const;
 };
+
+std::ostream& operator<<(std::ostream &out, const Fixed &fixed);
 
 #endif
