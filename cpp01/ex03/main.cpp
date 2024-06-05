@@ -16,7 +16,7 @@ int main(void)
 	}
 	std::cout << "Test 2: " << std::endl;
 	{
-		Weapon club = Weapon("crude spiked club");
+		// Weapon club = Weapon("crude spiked club");
 		HumanB jim("Jim");
 		jim.setWeapon(club);
 		jim.attack();
