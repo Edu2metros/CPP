@@ -1,6 +1,6 @@
 NAME := Claptrap
 
-SRC := main.cpp Claptrap.cpp
+SRC := main.cpp Claptrap.cpp ScavTrap.cpp
 
 FLAGS := -Wall -Wextra -Werror -std=c++98
 

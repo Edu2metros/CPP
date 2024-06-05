@@ -1,4 +1,4 @@
-#include "Claptrap.hpp"
+#include "ScavTrap.hpp"
 
 void get_stats(Claptrap &claptrap)
 {
@@ -10,5 +10,6 @@ void get_stats(Claptrap &claptrap)
 
 int main(void)
 {
-    Claptrap claptrap;
+    ScavTrap scav("hiiiii");
+	std::cout << scav.GetName() << std::endl;
 }
