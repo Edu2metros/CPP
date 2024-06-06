@@ -1,15 +1,15 @@
 #include "Claptrap.hpp"
 
 Claptrap::Claptrap() : _name("Claptrap"), _health(10), _energy(10), _attack(0) {
-    std::cout << "Default constructor called!" << std::endl;
+    std::cout << "Default constructor called for: " << _name << std::endl;
 }
 
 Claptrap::Claptrap(std::string name, int health, int energy, int attack) : _name(name), _health(health), _energy(energy), _attack(attack) {
-    std::cout << "Constructor with parameters called!" << std::endl;
+    std::cout << "Constructor with parameters called for: " << _name << std::endl;
 }
 
 Claptrap::Claptrap(const Claptrap& other) : _health(other._health), _energy(other._energy), _attack(other._attack) {
-    std::cout << "Copy constructor called!" << std::endl;
+    std::cout << "Copy constructor called for: " << _name << std::endl;
 }
 
 Claptrap& Claptrap::operator=(const Claptrap& other) {
@@ -18,12 +18,12 @@ Claptrap& Claptrap::operator=(const Claptrap& other) {
         _energy = other._energy;
         _attack = other._attack;
     }
-    std::cout << "Copy assignment operator called!" << std::endl;
+    std::cout << "Copy assignment operator called for: " << _name << std::endl;
     return *this;
 }
 
 Claptrap::~Claptrap() {
-    std::cout << "Destructor called!" << std::endl;
+    std::cout << "Destructor called for: " << _name << std::endl;
 }
 
 void Claptrap::attack(const std::string &target) {
@@ -79,4 +79,12 @@ int Claptrap::GetAttack()
 std::string Claptrap::GetName()
 {
 	return (this->_name);
+}
+
+void Claptrap::get_stats()
+{
+    std::cout << "\033[1;34mName: \033[0m" << GetName() << std::endl;
+    std::cout << "\033[1;35mHealth: \033[0m" << GetHealth() << std::endl;
+    std::cout << "\033[1;35mEnergy: \033[0m" << GetEnergy() << std::endl;
+    std::cout << "\033[1;35mAttack: \033[0m" << GetAttack() << std::endl;
 }

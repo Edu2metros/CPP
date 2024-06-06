@@ -1,15 +1,23 @@
 #include "ScavTrap.hpp"
 
-void get_stats(Claptrap &claptrap)
-{
-    std::cout << "\033[1;34mName: \033[0m" << claptrap.GetName() << std::endl;
-    std::cout << "\033[1;35mHealth: \033[0m" << claptrap.GetHealth() << std::endl;
-    std::cout << "\033[1;35mEnergy: \033[0m" << claptrap.GetEnergy() << std::endl;
-    std::cout << "\033[1;35mAttack: \033[0m" << claptrap.GetAttack() << std::endl;
-}
-
 int main(void)
 {
-    ScavTrap scav("hiiiii");
-	std::cout << scav.GetName() << std::endl;
+	Claptrap claptrap;
+	ScavTrap scavtrap("Scav");
+//	Claptrap rotine:
+	claptrap.get_stats();
+	claptrap.attack("Richard Rasmussen");
+	claptrap.beRepaired(500);
+	claptrap.get_stats();
+	claptrap.takeDamage(510);
+	claptrap.get_stats();
+	std::cout << std::endl;
+//	ScavTrap rotine:
+	scavtrap.get_stats();
+	scavtrap.attack("Michael Jackson");
+	scavtrap.beRepaired(500);
+	scavtrap.get_stats();
+	scavtrap.takeDamage(500);
+	scavtrap.get_stats();
+	scavtrap.guardGate();
 }

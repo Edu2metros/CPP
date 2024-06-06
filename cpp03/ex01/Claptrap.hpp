@@ -6,8 +6,8 @@
 
 class Claptrap
 {
-private:
-	std::string _name;
+protected:
+    std::string _name;
     int _health;
     int _energy;
     int _attack;
@@ -19,13 +19,14 @@ public:
     Claptrap& operator=(const Claptrap& other);
     ~Claptrap();
 
-	std::string GetName();
-	int GetHealth();
-	int GetEnergy();
-	int GetAttack();
-    void attack(const std::string &target);
+    std::string GetName();
+    int GetHealth();
+    int GetEnergy();
+    int GetAttack();
+    virtual void attack(const std::string &target);
     void takeDamage(unsigned int amount);
     void beRepaired(unsigned int amount);
+	void get_stats();
 };
 
 #endif
