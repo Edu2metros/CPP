@@ -1,19 +1,62 @@
-NAME := Number
+#------------------------------------------------------------------------------#
+#                                  GENERICS                                    #
+#------------------------------------------------------------------------------#
 
-SRC := main.cpp Fixed.cpp
+# Special variables
+DEFAULT_GOAL: all
+.DELETE_ON_ERROR: $(NAME)
+.PHONY: all bonus clean fclean re
 
-FLAGS := -std=c++98
+# Hide calls
+export VERBOSE    =    TRUE
+ifeq ($(VERBOSE),TRUE)
+    HIDE =
+else
+    HIDE = @
+endif
 
-$(NAME): $(SRC)
-	c++ $(FLAGS) -o $(NAME) $(SRC)
 
+#------------------------------------------------------------------------------#
+#                                VARIABLES                                     #
+#------------------------------------------------------------------------------#
+
+# Compiler and flags
+CC        =    c++
+CFLAGS    =    -Wall -Werror -Wextra -std=c++98 -I.
+RM        =    rm -rf
+
+# Dir and file names
+NAME    =    Number
+SRCS    =    main.cpp Fixed.cpp
+OBJDIR    =    objs
+OBJS    =    $(SRCS:%.cpp=$(OBJDIR)/%.o)
+INC        =  	Fixed.hpp
+
+# Create object directory if it doesn't exist
+$(OBJDIR):
+	@mkdir -p $(OBJDIR)
+
+#------------------------------------------------------------------------------#
+#                                 TARGETS                                      #
+#------------------------------------------------------------------------------#
+
+all: $(OBJDIR) $(NAME)
+
+# Generates output file
+$(NAME): $(OBJS)
+	$(HIDE)$(CC) $(CFLAGS) $(OBJS) -o $@
+
+# Compiles sources into objects
+$(OBJDIR)/%.o: %.cpp $(INC)
+	$(HIDE)$(CC) $(CFLAGS) -c $< -o $@
+
+# Removes objects
 clean:
-	rm -f $(NAME)	
+	$(HIDE)$(RM) $(OBJDIR)
 
-test:
-	clear && ./$(NAME)
+# Removes objects and executables
+fclean: clean
+	$(HIDE)$(RM) $(NAME)
 
-valgrind:
-	clear && valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(NAME)
-
-.PHONY: clean test valgrind
+# Removes objects and executables and remakes
+re: fclean all

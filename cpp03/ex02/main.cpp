@@ -3,7 +3,7 @@
 
 int main(void)
 {
-	FlagTrap flagtrap("Flagtrap");
+	FlagTrap flagtrap("Flag");
 	flagtrap.get_stats();
 	flagtrap.attack("Claptrap");
 	flagtrap.takeDamage(10);

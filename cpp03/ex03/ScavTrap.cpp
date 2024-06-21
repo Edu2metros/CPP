@@ -3,25 +3,25 @@
 
 ScavTrap::ScavTrap(std::string name) : Claptrap(name, 100, 50, 20)
 {
-    std::cout << "Default constructor called for ScavTrap: " << name << std::endl;
+    std::cout << "[SCAVTRAP MESSAGE CLASS] Default constructor called for ScavTrap: " << name << std::endl;
 }
 
 ScavTrap::ScavTrap(const ScavTrap& other) : Claptrap(other._name, other._health, other._energy, other._attack)
 {
-    std::cout << "Copy constructor called for ScavTrap: " << other._name << std::endl;
+    std::cout << "[SCAVTRAP MESSAGE CLASS] Copy constructor called for ScavTrap: " << other._name << std::endl;
 }
 
 ScavTrap& ScavTrap::operator=(const ScavTrap& other)
 {
     if (this != &other)
         Claptrap::operator=(other);
-    std::cout << "Assignment operator called for ScavTrap: " << other._name << std::endl;
+    std::cout << "[SCAVTRAP MESSAGE CLASS] Assignment operator called for ScavTrap: " << other._name << std::endl;
     return *this;
 }
 
 ScavTrap::~ScavTrap()
 {
-    std::cout << "Destructor called for ScavTrap: " << _name << std::endl;
+    std::cout << "[SCAVTRAP MESSAGE CLASS] Destructor called for ScavTrap: " << _name << std::endl;
 }
 
 void ScavTrap::guardGate()

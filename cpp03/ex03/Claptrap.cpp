@@ -1,15 +1,15 @@
 #include "Claptrap.hpp"
 
 Claptrap::Claptrap() : _name("Claptrap"), _health(10), _energy(10), _attack(0) {
-    std::cout << "Default constructor called for: " << _name << std::endl;
+    std::cout << "[MESSAGE CLASS CLAPTRAP] Default constructor called for: " << _name << std::endl;
 }
 
 Claptrap::Claptrap(std::string name, int health, int energy, int attack) : _name(name), _health(health), _energy(energy), _attack(attack) {
-    std::cout << "Constructor with parameters called for: " << _name << std::endl;
+    std::cout << "[MESSAGE CLASS CLAPTRAP] Constructor with parameters called for: " << _name << std::endl;
 }
 
 Claptrap::Claptrap(const Claptrap& other) : _health(other._health), _energy(other._energy), _attack(other._attack) {
-    std::cout << "Copy constructor called for: " << _name << std::endl;
+    std::cout << "[MESSAGE CLASS CLAPTRAP] Copy constructor called for: " << _name << std::endl;
 }
 
 Claptrap& Claptrap::operator=(const Claptrap& other) {
@@ -18,12 +18,12 @@ Claptrap& Claptrap::operator=(const Claptrap& other) {
         _energy = other._energy;
         _attack = other._attack;
     }
-    std::cout << "Copy assignment operator called for: " << _name << std::endl;
+    std::cout << "[MESSAGE CLASS CLAPTRAP] Copy assignment operator called for: " << _name << std::endl;
     return *this;
 }
 
 Claptrap::~Claptrap() {
-    std::cout << "Destructor called for: " << _name << std::endl;
+    std::cout << "[MESSAGE CLASS CLAPTRAP] Destructor called for: " << _name << std::endl;
 }
 
 void Claptrap::attack(const std::string &target) {

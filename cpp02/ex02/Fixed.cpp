@@ -115,7 +115,7 @@ Fixed Fixed::operator/(const Fixed &other) const
 
 Fixed& Fixed::operator++()
 {
-	this->value++;
+	this->value += 1;
 	return *this;
 }
 

@@ -1,14 +1,15 @@
-#include "FlagTrap.hpp"
-#include "ScavTrap.hpp"
+#include "DiamondTrap.hpp"
 
 int main(void)
 {
-	FlagTrap flagtrap("Flagtrap");
-	flagtrap.get_stats();
-	flagtrap.attack("Claptrap");
-	flagtrap.takeDamage(10);
-	flagtrap.get_stats();
-	flagtrap.beRepaired(10);
-	flagtrap.get_stats();
-	flagtrap.highFivesGuys();
+	DiamondTrap diamond("Horseman");
+	std::cout << std::endl << std::endl;
+	diamond.attack("Claptrap");
+	diamond.takeDamage(10);
+	diamond.beRepaired(10);
+	diamond.whoAmI();
+	diamond.guardGate();
+	diamond.highFivesGuys();
+	std::cout << std::endl << std::endl;
+	return (0);
 }

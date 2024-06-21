@@ -1,21 +1,62 @@
-NAME := Claptrap
+#------------------------------------------------------------------------------#
+#                                  GENERICS                                    #
+#------------------------------------------------------------------------------#
 
-SRC := main.cpp Claptrap.cpp ScavTrap.cpp FlagTrap.cpp
+# Special variables
+DEFAULT_GOAL: all
+.DELETE_ON_ERROR: $(NAME)
+.PHONY: all bonus clean fclean re
 
-FLAGS := -Wall -Wextra -Werror -std=c++98
+# Hide calls
+export VERBOSE    =    TRUE
+ifeq ($(VERBOSE),TRUE)
+    HIDE =
+else
+    HIDE = @
+endif
 
-$(NAME): $(SRC)
-	@c++ $(FLAGS) -o $(NAME) $(SRC)
 
-all: $(NAME)
+#------------------------------------------------------------------------------#
+#                                VARIABLES                                     #
+#------------------------------------------------------------------------------#
 
+# Compiler and flags
+CC        =    c++
+CFLAGS    =    -Wall -Werror -Wextra -std=c++98 -I.
+RM        =    rm -rf
+
+# Dir and file names
+NAME    =    Claptrap
+SRCS    =    $(wildcard *.cpp)
+OBJDIR    =    objs
+OBJS    =    $(SRCS:%.cpp=$(OBJDIR)/%.o)
+INC        = $(wildcard *.hpp)
+
+# Create object directory if it doesn't exist
+$(OBJDIR):
+	@mkdir -p $(OBJDIR)
+
+#------------------------------------------------------------------------------#
+#                                 TARGETS                                      #
+#------------------------------------------------------------------------------#
+
+all: $(OBJDIR) $(NAME)
+
+# Generates output file
+$(NAME): $(OBJS)
+	$(HIDE)$(CC) $(CFLAGS) $(OBJS) -o $@
+
+# Compiles sources into objects
+$(OBJDIR)/%.o: %.cpp $(INC)
+	$(HIDE)$(CC) $(CFLAGS) -c $< -o $@
+
+# Removes objects
 clean:
-	@rm -f $(NAME)
+	$(HIDE)$(RM) $(OBJDIR)
 
-run: all
-	clear && ./$(NAME);
+# Removes objects and executables
+fclean: clean
+	$(HIDE)$(RM) $(NAME)
 
-valgrind:
-	clear && valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(NAME)
-
-.PHONY: clean test valgrind
+# Removes objects and executables and remakes
+re: fclean all
