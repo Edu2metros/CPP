@@ -5,7 +5,7 @@
 # Special variables
 DEFAULT_GOAL: all
 .DELETE_ON_ERROR: $(NAME)
-.PHONY: all bonus clean fclean re
+.PHONY: all bonus clean fclean re debug
 
 # Hide calls
 export VERBOSE    =    TRUE
@@ -23,6 +23,7 @@ endif
 # Compiler and flags
 CC        =    c++
 CFLAGS    =    -g3
+DEBUG_FLAGS = -DDEBUG    # Flag para ativar modo debug (com prints de construtor/destrutor)
 RM        =    rm -rf
 
 # Dir and file names
@@ -55,9 +56,9 @@ run: all
 $(NAME): $(OBJS)
 	$(HIDE)$(CC) $(CFLAGS) $(OBJS) -o $@
 
-# Compiles sources into objects
+# Compiles sources into objects (with debug mode if specified)
 $(OBJDIR)/%.o: %.cpp $(INC)
-	$(HIDE)$(CC) $(CFLAGS) -c $< -o $@
+	$(HIDE)$(CC) $(CFLAGS) $(DEBUG_FLAGS) -c $< -o $@
 
 # Removes objects
 clean:
@@ -69,3 +70,7 @@ fclean: clean
 
 # Removes objects and executables and remakes
 re: fclean all
+
+# Compile with debug mode (com DEBUG definido)
+debug: CFLAGS += $(DEBUG_FLAGS)
+debug: clean all

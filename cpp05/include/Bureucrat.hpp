@@ -1,7 +1,13 @@
 #pragma once
 
-#define RED(text) "\x1b[31m" text "\x1b[0m"
-
+#define RED "\x1b[31m"
+#define GREEN "\x1b[32m"
+#define YELLOW "\x1b[33m"
+#define BLUE "\x1b[34m"
+#define MAGENTA "\x1b[35m"
+#define CYAN "\x1b[36m"
+#define WHITE "\x1b[37m"
+#define RESET "\x1b[0m"
 #include <string>
 #include <iostream>
 
@@ -19,11 +25,15 @@ class Bureucrat
 	~Bureucrat( void );
 
 	// Get and Setters
+	void checkGrade(int grade) const;
 	std::string getName(void) const;
 	void setName( std::string name );
 
 	int getGrade(void) const;
 	void setGrade(int grade);
+
+	void incrementGrade(void);
+	void decrementGrade(void);
 	class GradeTooHighException : public std::exception
 	{
 		public:
@@ -34,4 +44,11 @@ class Bureucrat
 		public:
 		virtual const char *what(void) const throw ();
 	};
+	Bureucrat& operator++(void);
+	Bureucrat operator++(int);
+
+	Bureucrat& operator--(void);
+	Bureucrat operator--(int);
 };
+
+std::ostream& operator<<(std::ostream& out, const Bureucrat &bureucrat);

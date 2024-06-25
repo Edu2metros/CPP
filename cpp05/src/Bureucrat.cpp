@@ -1,39 +1,52 @@
 #include "../include/Bureucrat.hpp"
 
-Bureucrat::Bureucrat(std::string name, int grade)
+static int check_debug(void)
 {
+	#ifndef DEBUG
+		return(0);
+	#else
+		return(1);
+	#endif
+}
+
+Bureucrat::Bureucrat(std::string name, int grade) : _name(name)
+{
+	if(check_debug())
+		std::cout << "Construtor called!" << std::endl;
 	if(grade < 1)
 		throw(GradeTooHighException());
 	else if(grade > 150)
 		throw(GradeTooLowException());
-	else
-		std::cout << "deu certo" << std::endl;
+	_grade = grade;
 }
 
 Bureucrat::Bureucrat(const Bureucrat& other)
 {
 	if(this != &other)
 	{
-		this->setName(other.getName());
-		this->setGrade(other.getGrade());
+		const_cast<std::string&>(this->_name) = other.getName();
+		this->_grade = other.getGrade();
 	}
-	std::cout << "Copy construtor called!" << std::endl;
+	if(check_debug())
+		std::cout << "Copy construtor called!" << std::endl;
 }
 
 Bureucrat& Bureucrat::operator=(const Bureucrat& other)
 {
 	if(this != &other)
 	{
-		this->setName(other.getName());
-		this->setGrade(other.getGrade());
+		const_cast<std::string&>(this->_name) = other.getName();
+		this->_grade = other.getGrade();
 	}
-	std::cout << "Overload operator copy called!" << std::endl;
+	if(check_debug())
+		std::cout << "Overload operator copy called!" << std::endl;
 	return(*this);
 }
 
 Bureucrat::~Bureucrat( void )
 {
-	std::cout << "Destrutor for: " << getName() << "called !" << std::endl; 
+	if(check_debug())
+		std::cout << "Destrutor for: " << getName() << " called !" << std::endl; 
 }
 
 std::string Bureucrat::getName(void) const
@@ -58,12 +71,65 @@ void Bureucrat::setGrade(int grade)
 
 const char* Bureucrat::GradeTooHighException::what(void) const throw ()
 {
-	std::cout << "entrou" << std::endl;
-	return("Oh no! The Bureucrat can only have a grade bigger than 1.");
+	return("The Bureucrat can only have a grade bigger than 1.");
 }
 
 const char* Bureucrat::GradeTooLowException::what(void) const throw ()
 {
-	std::cout << "entrou" << std::endl;
-	return("Oh no! The Bureucrat can only have a grade minus than 150");
+	return("The Bureucrat can only have a grade minus than 150");
+}
+
+std::ostream& operator<<(std::ostream &out, const Bureucrat &bureucrat)
+{
+	out << bureucrat.getName() << ", bureucrat grade " << bureucrat.getGrade();
+	return(out);
+}
+
+void Bureucrat::checkGrade(int grade) const
+{
+	if(grade < 1)
+		throw(Bureucrat::GradeTooHighException());
+	else if(grade > 150)
+		throw(Bureucrat::GradeTooLowException());
+	return;
+}
+
+void Bureucrat::incrementGrade(void)
+{
+	checkGrade(_grade - 1);
+	_grade--;
+}
+
+void Bureucrat::decrementGrade(void)
+{
+	checkGrade(_grade + 1);
+	_grade++;
+}
+
+Bureucrat& Bureucrat::operator++(void)
+{
+	checkGrade(_grade - 1);
+	_grade--;
+	return(*this);
+}
+
+Bureucrat Bureucrat::operator++(int)
+{
+	Bureucrat tmp(*this);
+	++(*this);
+	return(tmp);
+}
+
+Bureucrat& Bureucrat::operator--(void)
+{
+	checkGrade(_grade + 1);
+	_grade++;
+	return(*this);
+}
+
+Bureucrat Bureucrat::operator--(int)
+{
+	Bureucrat tmp(*this);
+	--(*this);
+	return(tmp);
 }
