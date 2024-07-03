@@ -1,4 +1,4 @@
-#define pragma_once
+#pragma once
 
 #include <iostream>
 #include <string>
