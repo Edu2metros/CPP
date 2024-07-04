@@ -2,8 +2,8 @@
 
 #include "AForm.hpp"
 
-#define GRADE 25
-#define EXEC 5
+#define PresidentialGrade 25
+#define PresidentialExec 5
 
 class PresidentialPardonForm : public AForm
 {
@@ -16,4 +16,5 @@ class PresidentialPardonForm : public AForm
 	PresidentialPardonForm& operator=(const PresidentialPardonForm& other);
 	~PresidentialPardonForm( void );
 	const std::string getTarget(void) const;
+	void execute(Bureucrat const & executor) const;
 };

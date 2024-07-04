@@ -58,6 +58,7 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.cpp $(INC)
 	@mkdir -p $(@D)
 	$(HIDE)$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
 
+
 # Removes objects
 clean:
 	$(HIDE)$(RM) $(OBJDIR)
@@ -72,3 +73,6 @@ re: fclean all
 # Compile with debug mode (com DEBUG definido)
 debug: CFLAGS += $(DEBUG_FLAGS)
 debug: re
+
+gdb:
+	gnome-terminal --maximize -- bash -c "sleep 0.3 && gdb --tui --args ./$(NAME)"

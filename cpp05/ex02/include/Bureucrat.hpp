@@ -10,6 +10,7 @@
 #define RESET "\x1b[0m"
 #include <string>
 #include <iostream>
+#include <fstream>
 #include "AForm.hpp"
 
 class AForm;

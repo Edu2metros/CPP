@@ -1,6 +1,6 @@
 #include "../include/RobotomyRequestForm.hpp"
 
-RobotomyRequestForm::RobotomyRequestForm(std::string target) : AForm("RobotomyRequestForm", GRADE, EXEC), _target(target)
+RobotomyRequestForm::RobotomyRequestForm(std::string target) : AForm("RobotomyRequestForm", ROBOTOMYGRADE, ROBOTOMYEXEC), _target(target)
 {
 	if(check_debug())
 		std::cout << "Construtor for RobotomyRequestForm called" << std::endl;
@@ -28,4 +28,20 @@ RobotomyRequestForm::~RobotomyRequestForm( void )
 const std::string RobotomyRequestForm::getTarget(void) const
 {
 	return(_target);
+}
+
+void RobotomyRequestForm::execute(Bureucrat const & executor) const
+{
+	if(executor.getGrade() > getGradeExecute())
+		throw(GradeTooLowException());
+	else if(!getSigned())
+		throw(NotSignedException());
+	else
+	{
+		std::cout << "*drilling noises* ";
+		if(rand() % 2)
+			std::cout << getTarget() << " has been robotomized successfully by " << executor.getName() << std::endl;
+		else
+			std::cout << getTarget() << " has failed to be robotomized by " << executor.getName() << std::endl;
+	}
 }

@@ -61,12 +61,17 @@ bool AForm::getSigned(void) const
 
 const char* AForm::GradeTooHighException::what(void) const throw ()
 {
-	return("The AForm can only have a grade bigger than 1.");
+	return("Error: The AForm can only have a grade bigger than ");
 }
 
 const char* AForm::GradeTooLowException::what(void) const throw ()
 {
-	return("The AForm can only have a grade minus than 150.");
+	return("The AForm can only have a grade minus than ");
+}
+
+const char* AForm::NotSignedException::what(void) const throw ()
+{
+	return("The AForm is not signed. Your grade is: ");
 }
 
 std::ostream& operator<<(std::ostream& out, const AForm &Aform)
@@ -78,14 +83,15 @@ std::ostream& operator<<(std::ostream& out, const AForm &Aform)
 
 void AForm::beSigned(Bureucrat GetulioVargas)
 {
-	if(GetulioVargas.getGrade() > _gradeSign)
+	if(_gradeSign < GetulioVargas.getGrade())
 		throw GradeTooLowException();
 	_signed = true;
 }
 
 void AForm::execute(Bureucrat const & executor) const
 {
-	(void)executor;
-	std::cout << "EXECUTADO" << std::endl;
+	if(executor.getGrade() > _gradeExecute)
+		throw GradeTooLowException();
+	else if(!getSigned())
+		throw NotSignedException();
 }
-

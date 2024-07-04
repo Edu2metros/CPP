@@ -143,12 +143,19 @@ void Bureucrat::signForm(AForm& form)
 	}
 	catch(const std::exception& e)
 	{
-		std::cout << "Failed to sign form " << form.getName() << ": " << e.what() << std::endl;
+		std::cout << e.what() << form.getGradeSign() << std::endl;
 	}
 }
 
 void Bureucrat::executeForm(AForm const & form)
 {
-	(void)form;
-	std::cout << "FORM EXECUTADO" << std::endl;
+	try
+	{
+		form.execute(*this);
+		std::cout << "Form " << form.getName() << " executed successfully!" << std::endl;
+	}
+	catch(const std::exception& e)
+	{
+		std::cout << e.what() << form.getGradeSign() << std::endl;
+	}
 }

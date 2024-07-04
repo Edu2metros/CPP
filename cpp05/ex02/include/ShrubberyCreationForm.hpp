@@ -3,8 +3,8 @@
 #include "AForm.hpp"
 #include "Bureucrat.hpp"
 
-#define GRADE 145
-#define EXEC 137
+#define ShubberyGrade 145
+#define ShubberyExec 137
 
 class ShrubberyCreationForm : public AForm
 {
@@ -17,4 +17,10 @@ class ShrubberyCreationForm : public AForm
 	ShrubberyCreationForm& operator=(const ShrubberyCreationForm& other);
 	~ShrubberyCreationForm( void );
 	const std::string getTarget(void) const;
+	void execute(Bureucrat const & executor) const;
+	class FileNotOpenedException : public std::exception
+	{
+		public:
+		virtual const char* what() const throw();
+	};
 };
