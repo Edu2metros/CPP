@@ -1,6 +1,8 @@
 #pragma once
 #include <iostream>
 #include <string>
+#include <cstdlib>
+#include <cmath>
 
 #define RED(text) "\033[31m" + std::string(text) + "\033[0m"
 #define GREEN(text) "\033[32m" text "\033[0m"
@@ -26,5 +28,6 @@ public:
 		public:
 		ImpossibleConversionException(const std::string &message);
 		virtual const char *what() const throw();
+		virtual ~ImpossibleConversionException() throw();
 	};	
 };

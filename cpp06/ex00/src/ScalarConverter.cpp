@@ -1,5 +1,8 @@
 #include "ScalarConverter.hpp"
 
+#define INT_MIN -2147483648
+#define INT_MAX 2147483647
+
 bool checkDebug(void)
 {
 	#ifdef DEBUG
@@ -41,131 +44,133 @@ ScalarConverter::ImpossibleConversionException::ImpossibleConversionException(co
 	_message = message;
 }
 
+ScalarConverter::ImpossibleConversionException::~ImpossibleConversionException() throw()
+{
+	if(checkDebug())
+		std::cout << "ScalarConverter: ImpossibleConversionException destructor called" << std::endl;
+}
+
 const char *ScalarConverter::ImpossibleConversionException::what() const throw()
 {
 	return _message.c_str();
 }
 
-/* void convertToChar(const std::string &input)
+static std::string removeF(const std::string &input)
 {
-    if (input == "nan" || input == "inf" || input == "-inf" || input == "+inf")
-        std::cout << "char: Impossible" << std::endl;
-    int i;
-	try
-	{
-        i = std::stoi(input);
-	}
- 	catch (const std::invalid_argument& e) {
-        throw ScalarConverter::ImpossibleConversionException("Char: Impossible");
-    } catch (const std::out_of_range& e) {
-        throw ScalarConverter::ImpossibleConversionException("Char: Impossible");
+	std::string str = input;
+	if (str[str.length() - 1] == 'f' && str.find(".") != std::string::npos)
+		str = str.substr(0, str.length() - 1);
+	return str;
+}
+
+static int nearestInt(const std::string &input)
+{
+    char* end;
+   	long longNum = std::strtold(input.c_str(), &end);
+	if(longNum < INT_MIN || longNum > INT_MAX || *end != '\0')
+		throw(ScalarConverter::ImpossibleConversionException("int: impossible"));
+    return static_cast<int>(longNum);
+}
+
+static const char* cutString(const std::string &input) {
+    int i = input.find(".");
+    if (i != -1) {
+        return input.substr(0, i).c_str();
     }
-    if (i < 32 || i > 126)
-		throw ScalarConverter::ImpossibleConversionException("Char: Impossible"); 
-    else if(!isprint(i))
-        throw ScalarConverter::ImpossibleConversionException("Char: Non displayable");
+    return input.c_str();
+}
 
-    std::cout << "char: '" << static_cast<char>(i) << "'" << std::endl;
-} */
-
-void convertToChar(const std::string &input)
+static bool impossibleConversion(const std::string &input)
 {
-    int i;
-    if (input.length() == 1) {
-        i = static_cast<int>(input[0]);
+	if(input == "nan" || input == "inf" || input == "-inf" || input == "+inf")
+	{
+		std::string message;
+		message += "char: Impossible\n";
+		message += "int: Impossible\n";
+		message += "float: " + input + "f\n";
+		message += "double: " + input + "\n";
+		std::cout << message;
+		return true;
+	}
+	return false;
+}
+
+
+static void convertToChar(const std::string &input)
+{
+    if (input.length() == 1 && !std::isdigit(static_cast<unsigned char>(input[0]))) {
+        char result = static_cast<char>(input[0]);
+        if (result >= 32 && result <= 126) {
+            std::cout << "char: '" << result << "'" << std::endl;
+        } else {
+            std::cout << "char: non displayable" << std::endl;
+        }
     } else {
-        try {
-            i = std::stoi(input);
-        } catch (const std::invalid_argument& e) {
-            throw ScalarConverter::ImpossibleConversionException("Char: Impossible");
-        } catch (const std::out_of_range& e) {
-            throw ScalarConverter::ImpossibleConversionException("Char: Impossible");
+        char* end;
+        long num = std::strtol(cutString(input), &end, 10);
+        if (*end == '\0' && num >= 0 && num <= 255) {
+            char result = static_cast<char>(num);
+            if (result >= 32 && result <= 126) {
+                std::cout << "char: '" << result << "'" << std::endl;
+            } else {
+                std::cout << "char: non displayable" << std::endl;
+            }
+        } else {
+            std::cout << "char: impossible" << std::endl;
         }
     }
-    if (i < 32 || i > 126)
-        throw ScalarConverter::ImpossibleConversionException("Char: Impossible"); 
-    else if(!isprint(i))
-        throw ScalarConverter::ImpossibleConversionException("Char: Non displayable");
-
-    std::cout << "char: '" << static_cast<char>(i) << "'" << std::endl;
 }
 
-void convertToInt(const std::string &input)
+
+static void convertToInt(const std::string &input)
 {
-	int i;
-	if(input.length() == 1)
-		i = static_cast<int>(input[0]);
-	else
-	{
-		try
-		{
-			i = std::stoi(input);
-		}
-		catch (const std::invalid_argument& e) {
-			throw ScalarConverter::ImpossibleConversionException("Int: Impossible");
-		} catch (const std::out_of_range& e) {
-			throw ScalarConverter::ImpossibleConversionException("Int: Impossible");
-		}
+	try{
+	int result = nearestInt(removeF(input));
+	std::cout << "int: " << result << std::endl;
 	}
-	std::cout << "int: " << i << std::endl;
+	catch(ScalarConverter::ImpossibleConversionException &e){
+		std::cout << e.what() << std::endl;
+	}
 }
 
-void convertToFloat(const std::string &input)
+static void convertToFloat(const std::string &input)
 {
-	float f;
-	if(input.length() == 1)
-		f = static_cast<float>(input[0]);
-	else
-	{
-		try
-		{
-			f = std::stof(input);
-		}
-		catch (const std::invalid_argument& e) {
-			throw ScalarConverter::ImpossibleConversionException("Float: Impossible");
-		} catch (const std::out_of_range& e) {
-			throw ScalarConverter::ImpossibleConversionException("Float: Impossible");
-		}
+	try{
+		char *end;
+		float result = static_cast<float>(std::strtof(removeF(input).c_str(), &end));
+		if(*end != '\0')
+			throw(ScalarConverter::ImpossibleConversionException("float: impossible"));
+		if(result - static_cast<int>(result) == 0)
+			std::cout << "float: " << result << ".0f" << std::endl;
+		else
+			std::cout << "float: " << result << "f" << std::endl;
 	}
-	if(f - static_cast<int>(f) == 0)
-		std::cout << "float: " << f << ".0f" << std::endl;
-	else
-		std::cout << "float: " << f << "f" << std::endl;
+	catch(std::exception &e){
+		std::cout << "float: impossible" << std::endl;
+	}
 }
 
-void convertToDouble(const std::string &input)
+static void convertToDouble(const std::string &input)
 {
-	double d;
-	if(input.length() == 1)
-		d = static_cast<double>(input[0]);
-	else
-	{
-		try
-		{
-			d = std::stod(input);
-		}
-		catch (const std::invalid_argument& e) {
-			throw ScalarConverter::ImpossibleConversionException("Double: Impossible");
-		} catch (const std::out_of_range& e) {
-			throw ScalarConverter::ImpossibleConversionException("Double: Impossible");
-		}
+	try{
+		char *end;
+		double result = static_cast<double>(std::strtod(removeF(input).c_str(), &end));
+		if(*end != '\0')
+			throw(ScalarConverter::ImpossibleConversionException("double: impossible"));
+		if(result - static_cast<int>(result) == 0)
+			std::cout << "double: " << result << ".0" << std::endl;
+		else
+			std::cout << "double: " << result << std::endl;
 	}
-	if(d - static_cast<int>(d) == 0)
-		std::cout << "double: " << d << ".0" << std::endl;
-	else
-		std::cout << "double: " << d << std::endl;
+	catch(std::exception &e){
+		std::cout << "double: impossible" << std::endl;
+	}
 }
 
 void ScalarConverter::convert(const std::string &input)
 {
-	if(input == "nan" || input == "inf" || input == "-inf" || input == "+inf")
-	{
-		std::cout << "char: Impossible" << std::endl;
-		std::cout << "int: Impossible" << std::endl;
-		std::cout << "float: " << input << "f" << std::endl;
-		std::cout << "double: " << input << std::endl;
+	if(impossibleConversion(input))
 		return;
-	}
 	convertToChar(input);
 	convertToInt(input);
 	convertToFloat(input);
