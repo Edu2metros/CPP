@@ -27,7 +27,7 @@ RM         := rm -rf
 INCLUDE    := -Iinclude
 
 # Directories and file names
-NAME       := convert
+NAME       := serializer
 SRCDIR     := src
 OBJDIR     := objs
 SRCS       := $(wildcard $(SRCDIR)/*.cpp)
