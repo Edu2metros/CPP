@@ -9,7 +9,8 @@
 class Span
 {
 	private:
-	unsigned int _n;
+	unsigned int _lenght;
+	std::vector<int> _numbers;
 	public:
 	//Orthodox Canonical Form
 	Span();
@@ -23,4 +24,15 @@ class Span
 	void addNumber(std::vector<int>::iterator begin, std::vector<int>::iterator end);
 	int shortestSpan();
 	int longestSpan();
+	std::ostream& shortestSpanTwo(std::ostream &out);
+	class NoSpaceException : public std::exception
+	{
+		public:
+		virtual const char * what() const throw();
+	};
+	class NoSpanException : public std::exception
+	{
+		public:
+		virtual const char * what() const throw();
+	};
 };

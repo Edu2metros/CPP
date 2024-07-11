@@ -27,7 +27,7 @@ RM         := rm -rf
 INCLUDE    := -Iinclude
 
 # Directories and file names
-NAME       := span
+NAME       := mutantstack
 SRCDIR     := src
 OBJDIR     := objs
 SRCS       := $(wildcard $(SRCDIR)/*.cpp)

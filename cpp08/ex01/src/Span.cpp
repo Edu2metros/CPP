@@ -9,19 +9,19 @@ bool checkDebug()
 	#endif
 }
 
-Span::Span() : _n(0)
+Span::Span() : _lenght(0)
 {
 	if (checkDebug())
 		std::cout << "Span default constructor called" << std::endl;
 }
 
-Span::Span(unsigned int n) : _n(n)
+Span::Span(unsigned int n) : _lenght(n)
 {
 	if (checkDebug())
 		std::cout << "Span parameter constructor called" << std::endl;
 }
 
-Span::Span(Span const & src) : _n(src._n)
+Span::Span(Span const & src) : _lenght(src._lenght)
 {
 	if (checkDebug())
 		std::cout << "Span copy constructor called" << std::endl;
@@ -39,24 +39,34 @@ Span & Span::operator=(Span const & rhs)
 		std::cout << "Span assignation operator called" << std::endl;
 	if (this != &rhs)
 	{
-		_n = rhs._n;
+		_lenght = rhs._lenght;
 	}
 	return *this;
 }
 
+const char * Span::NoSpaceException::what() const throw()
+{
+	return "No space left in the Span";
+}
+
+const char * Span::NoSpanException::what() const throw()
+{
+	return "No span to calculate";
+}
+
 void Span::addNumber(int n)
 {
-	if (_n == 0)
+	if (_lenght == 0)
 		throw Span::NoSpaceException();
-	_n--;
+	_lenght--;
 	_numbers.push_back(n);
 }
 
 void Span::addNumber(std::vector<int>::iterator begin, std::vector<int>::iterator end)
 {
-	if (_n < std::distance(begin, end))
+	if (_lenght < std::distance(begin, end))
 		throw Span::NoSpaceException();
-	_n -= std::distance(begin, end);
+	_lenght -= std::distance(begin, end);
 	_numbers.insert(_numbers.end(), begin, end);
 }
 
