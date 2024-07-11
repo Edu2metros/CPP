@@ -1,54 +1,50 @@
 #include "MutantStack.hpp"
 
-template <typename T, typename Container>
-MutantStack<T, Container>::MutantStack()
+template <typename T>
+MutantStack<T>::MutantStack()
 {
-	#ifdef DEBUG
-		std::cout << "MutantStack default constructor called" << std::endl;
-	#endif
+    #ifdef DEBUG
+        std::cout << "MutantStack default constructor called" << std::endl;
+    #endif
 }
 
-template <typename T, typename Container>
-MutantStack<T, Container>::MutantStack(const MutantStack<T, Container>& other) : std::stack<T, Container>(other)
+template <typename T>
+MutantStack<T>::MutantStack(const MutantStack<T>& other) : std::stack<T>(other)
 {
-	#ifdef DEBUG
-		std::cout << "MutantStack copy constructor called" << std::endl;
-	#endif
+    #ifdef DEBUG
+        std::cout << "MutantStack copy constructor called" << std::endl;
+    #endif
 }
 
-template <typename T, typename Container>
-MutantStack<T, Container>::~MutantStack()
+template <typename T>
+MutantStack<T>::~MutantStack()
 {
-	#ifdef DEBUG
-		std::cout << "MutantStack destructor called" << std::endl;
-	#endif
+    #ifdef DEBUG
+        std::cout << "MutantStack destructor called" << std::endl;
+    #endif
 }
 
-template <typename T, typename Container>
-MutantStack<T, Container>& MutantStack<T, Container>::operator=(const MutantStack<T, Container>& other)
+template <typename T>
+MutantStack<T>& MutantStack<T>::operator=(const MutantStack<T>& other)
 {
-	if (this != &other)
-	{
-		std::stack<T, Container>::operator=(other);
-	}
-	#ifdef DEBUG
-		std::cout << "MutantStack assignation operator called" << std::endl;
-	#endif
-	return *this;
+    if (this != &other)
+    {
+        std::stack<T>::operator=(other);
+    }
+    #ifdef DEBUG
+        std::cout << "MutantStack assignation operator called" << std::endl;
+    #endif
+    return *this;
 }
 
-template <typename T, typename Container>
-typename MutantStack<T, Container>::iterator MutantStack<T, Container>::begin()
+template <typename T>
+typename MutantStack<T>::iterator MutantStack<T>::begin()
 {
-    typedef typename std::stack<T, Container>::container_type::iterator container_iterator;
-    container_iterator container_it = std::stack<T, Container>::c.begin();
-    return iterator(container_it);
+    return this->c.begin();
 }
 
-template <typename T, typename Container>
-typename MutantStack<T, Container>::iterator MutantStack<T, Container>::end()
+template <typename T>
+typename MutantStack<T>::iterator MutantStack<T>::end()
 {
-    typedef typename std::stack<T, Container>::container_type::iterator container_iterator;
-    container_iterator container_it = std::stack<T, Container>::c.end();
-    return iterator(container_it);
+    return this->c.end();
 }

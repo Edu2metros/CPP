@@ -4,8 +4,8 @@
 #include <iostream>
 #include <string>
 
-template <typename T, typename Container = std::deque<T> >
-class MutantStack : public std::stack<T, Container>
+template <typename T>
+class MutantStack : public std::stack<T>
 {
 public:
 	// Syntax Orthodox Canonical Form
@@ -15,8 +15,8 @@ public:
 	MutantStack &operator=(MutantStack const &rhs);
 
 	//Iterators
-	typedef typename Container::iterator iterator;
-	typedef typename Container::const_iterator const_iterator;
+	typedef typename std::stack<T>::container_type::iterator iterator;
+	typedef typename std::stack<T>::container_type::const_iterator const_iterator;
 	iterator begin();
 	iterator end();
 	const_iterator begin() const;
