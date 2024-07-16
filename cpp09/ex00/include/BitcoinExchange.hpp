@@ -3,18 +3,16 @@
 #include <iostream>
 #include <string>
 #include <fstream>
-#include <set>
+#include <map>
 #include <exception>
 #include <cstdlib>
+#include <sstream>
 
 class BitcoinExchange
 {
-    private:
-    std::set<std::string> _BitcoinDate;
-    std::set<float> _BitcoinValue;
-
-    std::set<std::string> _InputDate;
-    std::set<float> _InputValue;
+private:
+    std::map<std::string, float> _BitcoinData;
+    std::map<std::string, std::string> _InputData;
 
     void validInput(int argc, char **argv, std::ifstream &file);
     void validData(std::ifstream &data);
@@ -24,28 +22,25 @@ class BitcoinExchange
     bool tableMonth(int month, int day, int year);
     void calculate(void);
 
-    // Orthodox Canonical form
+public:
+    BitcoinExchange();
+    BitcoinExchange(const BitcoinExchange& other);
+    BitcoinExchange& operator=(const BitcoinExchange& other);
+    ~BitcoinExchange();
+
+    void convert(int argc, char **argv);
+    void insertBitcoinData(const std::string &BitcoinDate, float BitcoinValue);
+    void insertInputData(const std::string &date, const std::string &value);
+    void validDateInput(const std::string &date);
+    std::string findBitcoinValue(const std::string &date);
+    
+    class BitcoinExchangeException : public std::exception
+    {
+    private:
+        std::string _message;
     public:
-        BitcoinExchange();
-        BitcoinExchange(const BitcoinExchange& other);
-        BitcoinExchange& operator=(const BitcoinExchange& other);
-        ~BitcoinExchange();
-        //Functions members
-        void convert(int argc, char **argv);
-        void insertBitcoinDate(std::string &BitcoinDate);
-        void insertBitcoinValue(float BitcoinValue);
-        void insertInputDate(std::string &line);
-        void insertInputValue(float value);
-        void validDateInput(std::string date);
-        std::string findBitcoinValue(std::string date, float value);
-        //Exceptions class
-        class BitcoinExchangeException : public std::exception
-        {
-            private:
-                std::string _message;
-            public:
-                BitcoinExchangeException(const std::string& message);
-                virtual ~BitcoinExchangeException() throw();
-                virtual const char* what() const throw();
-        };
+        BitcoinExchangeException(const std::string& message);
+        virtual ~BitcoinExchangeException() throw();
+        virtual const char* what() const throw();
+    };
 };

@@ -21,7 +21,7 @@ endif
 
 # Compiler and flags
 CC         := c++
-CFLAGS     := -g3 -Wall -Wextra -Werror -std=c++98
+CFLAGS     := -std=c++98 -g3
 DEBUG_FLAGS := -DDEBUG
 RM         := rm -rf
 INCLUDE    := -Iinclude
