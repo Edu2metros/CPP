@@ -27,12 +27,12 @@ RM         := rm -rf
 INCLUDE    := -Iinclude
 
 # Directories and file names
-NAME       := mutantstack
+NAME       := btc
 SRCDIR     := src
 OBJDIR     := objs
 SRCS       := $(wildcard $(SRCDIR)/*.cpp)
 OBJS       := $(SRCS:$(SRCDIR)/%.cpp=$(OBJDIR)/%.o)
-INC        := $(wildcard includes/*.hpp)
+INC        := $(wildcard include/*.hpp)
 
 # Create object directory if it doesn't exist
 $(OBJDIR):
