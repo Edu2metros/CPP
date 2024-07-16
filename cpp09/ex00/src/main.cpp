@@ -8,9 +8,10 @@
 
 int main(int argc, char **argv)
 {
+    BitcoinExchange btc;
     try
     {
-        BitcoinExchange::convert(argc, argv);   
+        btc.convert(argc, argv);   
     }
     catch(std::exception& exceptionClass)
     {
