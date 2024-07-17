@@ -2,6 +2,8 @@
 
 #include <string>
 #include <iostream>
+#include <ctime>
+#include <cstdlib>
 
 class Base
 {

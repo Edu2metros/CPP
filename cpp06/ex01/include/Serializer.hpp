@@ -2,6 +2,7 @@
 
 #include "Data.hpp"
 
+typedef unsigned int *uintptr_t;
 class Serializer
 {
 private:

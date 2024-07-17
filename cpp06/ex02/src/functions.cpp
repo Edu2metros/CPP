@@ -1,24 +1,10 @@
 #include "A.hpp"
 #include "B.hpp"
 #include "C.hpp"
-#include <random>
-
-
-
-int myRand(void)
-{
-    std::random_device rd; // obtain a random number from hardware
-    std::mt19937 gen(rd()); // seed the generator
-    std::uniform_int_distribution<> dis(0, 2); // define the range
-
-    return dis(gen) % 3;
-}
-
-
 
 Base *generate(void)
 {
-	int random = myRand();
+	int random = rand() % 3;
 	if (random == 0)
 		return new A();
 	else if (random == 1)
@@ -30,11 +16,11 @@ Base *generate(void)
 void identify(Base *p)
 {
 	std::cout << "This pointer is a ";
-	if(dynamic_cast<A*>(p) != nullptr)
+	if(dynamic_cast<A*>(p) != NULL)
 		std::cout << "A!" << std::endl;
-	else if(dynamic_cast<B*>(p) != nullptr)
+	else if(dynamic_cast<B*>(p) != NULL)
 		std::cout << "B!" << std::endl;
-	else if(dynamic_cast<C*>(p) != nullptr)
+	else if(dynamic_cast<C*>(p) != NULL)
 		std::cout << "C!" << std::endl;
 	else
 		std::cout << "Idk" << std::endl;

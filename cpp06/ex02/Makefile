@@ -21,13 +21,13 @@ endif
 
 # Compiler and flags
 CC         := c++
-CFLAGS     := -g3 -Wall -Wextra -Werror
+CFLAGS     := -g3 -Wall -Wextra -Werror -std=c++98
 DEBUG_FLAGS := -DDEBUG
 RM         := rm -rf
 INCLUDE    := -Iinclude
 
 # Directories and file names
-NAME       := identify
+NAME       := serializer
 SRCDIR     := src
 OBJDIR     := objs
 SRCS       := $(wildcard $(SRCDIR)/*.cpp)
@@ -47,7 +47,7 @@ all: $(OBJDIR) $(NAME)
 
 # Target to run the executable
 run: all
-	clear && ./$(NAME)
+	clear && valgrind ./$(NAME)
 
 # Generates the output file
 $(NAME): $(OBJS)

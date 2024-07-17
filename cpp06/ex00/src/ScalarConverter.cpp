@@ -72,12 +72,12 @@ static int nearestInt(const std::string &input)
     return static_cast<int>(longNum);
 }
 
-static const char* cutString(const std::string &input) {
+static std::string cutString(const std::string &input) {
     int i = input.find(".");
     if (i != -1) {
-        return input.substr(0, i).c_str();
+        return input.substr(0, i);
     }
-    return input.c_str();
+    return input;
 }
 
 static bool impossibleConversion(const std::string &input)
@@ -107,7 +107,7 @@ static void convertToChar(const std::string &input)
         }
     } else {
         char* end;
-        long num = std::strtol(cutString(input), &end, 10);
+        long num = std::strtol(cutString(input).c_str(), &end, 10);
         if (*end == '\0' && num >= 0 && num <= 255) {
             char result = static_cast<char>(num);
             if (result >= 32 && result <= 126) {

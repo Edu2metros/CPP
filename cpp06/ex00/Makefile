@@ -47,7 +47,7 @@ all: $(OBJDIR) $(NAME)
 
 # Target to run the executable
 run: all
-	clear && ./$(NAME)
+	clear && valgrind ./$(NAME)
 
 # Generates the output file
 $(NAME): $(OBJS)
