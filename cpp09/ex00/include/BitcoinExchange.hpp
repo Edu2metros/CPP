@@ -3,16 +3,17 @@
 #include <iostream>
 #include <string>
 #include <fstream>
-#include <map>
-#include <exception>
+#include <set>
+	#include <exception>
 #include <cstdlib>
 #include <sstream>
 
 class BitcoinExchange
 {
 private:
-    std::map<std::string, float> _BitcoinData;
-    std::map<std::string, std::string> _InputData;
+    std::set<std::pair<std::string, float> > _BitcoinData;
+    std::string *_InputDate;
+    std::string *_InputValue;
 
     void validInput(int argc, char **argv, std::ifstream &file);
     void validData(std::ifstream &data);
@@ -21,6 +22,7 @@ private:
     std::string getDate(const std::string& date);
     bool tableMonth(int month, int day, int year);
     void calculate(void);
+    float extractInputValue(const std::string& inputLine);
 
 public:
     BitcoinExchange();
@@ -30,7 +32,7 @@ public:
 
     void convert(int argc, char **argv);
     void insertBitcoinData(const std::string &BitcoinDate, float BitcoinValue);
-    void insertInputData(const std::string &date, const std::string &value);
+    void setInputData(const std::string &date, const std::string &value);
     void validDateInput(const std::string &date);
     std::string findBitcoinValue(const std::string &date);
     

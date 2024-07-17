@@ -11,25 +11,23 @@ bool BitcoinExchange::checkDebug(void)
 
 void BitcoinExchange::insertBitcoinData(const std::string &BitcoinDate, float BitcoinValue)
 {
-    _BitcoinData[BitcoinDate] = BitcoinValue;
+    _BitcoinData.insert(std::make_pair(BitcoinDate, BitcoinValue));
 }
 
-void BitcoinExchange::insertInputData(const std::string &date, const std::string &value)
+void BitcoinExchange::setInputData(const std::string &date, const std::string &value)
 {
-    _InputData[date] = value;
+    *_InputDate = date;
+    *_InputValue = value;
 }
 
-BitcoinExchange::BitcoinExchange()
+BitcoinExchange::BitcoinExchange() : _InputDate(new std::string()), _InputValue(new std::string())
 {
     if (checkDebug())
         std::cout << "BitcoinExchange constructor called" << std::endl;
 }
 
-BitcoinExchange::BitcoinExchange(const BitcoinExchange& other)
+BitcoinExchange::BitcoinExchange(const BitcoinExchange& other) : _BitcoinData(other._BitcoinData), _InputDate(new std::string(*(other._InputDate))), _InputValue(new std::string(*(other._InputValue)))
 {
-    _BitcoinData = other._BitcoinData;
-    _InputData = other._InputData;
-    
     if (checkDebug())
         std::cout << "BitcoinExchange copy constructor called" << std::endl;
 }
@@ -39,7 +37,8 @@ BitcoinExchange& BitcoinExchange::operator=(const BitcoinExchange& other)
     if (this != &other)
     {
         _BitcoinData = other._BitcoinData;
-        _InputData = other._InputData;
+        *_InputDate = *(other._InputDate);
+        *_InputValue = *(other._InputValue);
     }
     
     if (checkDebug())
@@ -50,6 +49,9 @@ BitcoinExchange& BitcoinExchange::operator=(const BitcoinExchange& other)
 
 BitcoinExchange::~BitcoinExchange()
 {
+    delete _InputDate;
+    delete _InputValue;
+
     if (checkDebug())
         std::cout << "BitcoinExchange destructor called" << std::endl;
 }
@@ -77,7 +79,7 @@ void BitcoinExchange::validInput(int argc, char **argv, std::ifstream &file)
 {
     if (argc != 2)
     {
-        throw BitcoinExchangeException("Error !\nUsage: ./BitcoinExchange [file]");
+        throw BitcoinExchangeException("Error !\nUsage: ./btc [file]");
     }
     file.open(argv[1]);
     if (!file.is_open())
@@ -90,11 +92,10 @@ void BitcoinExchange::validInput(int argc, char **argv, std::ifstream &file)
         throw BitcoinExchangeException("Error !\nInvalid file.");
     }
     std::string line;
-    while (std::getline(file, line) && line != "")
+    if (std::getline(file, line) && !line.empty())
     {
-        std::string date = line.substr(0, line.find("|"));
-        std::string value = line.substr(line.find("|") + 1);
-        insertInputData(date, value);
+        *_InputDate = line.substr(0, line.find("|") - 1);
+        *_InputValue = line.substr(line.find("|") + 2);
     }
     file.close();
 }
@@ -171,7 +172,7 @@ std::string BitcoinExchange::getDate(const std::string& date)
 
 void BitcoinExchange::validData(std::ifstream &data)
 {
-    data.open("/home/eddos-sa/projects/CPP/cpp09/ex00/files/data.csv");
+    data.open("/nfs/homes/eddos-sa/42sp/gitprojetos/cpp/cpp09/ex00/files/data.csv");
     if (!data.is_open())
     {
         throw BitcoinExchangeException("Error !\nCan't find the data.");
@@ -179,6 +180,7 @@ void BitcoinExchange::validData(std::ifstream &data)
     std::string header;
     if (!std::getline(data, header) || header != "date,exchange_rate")
     {
+        std::cout << header << std::endl;
         throw BitcoinExchangeException("Error !\nInvalid data.");
     }
     std::string line;
@@ -193,9 +195,9 @@ void BitcoinExchange::validData(std::ifstream &data)
 
 void BitcoinExchange::validDateInput(const std::string &date)
 {
-    std::cout << date << std::endl;
     if (date.size() != 10)
     {
+        std::cout << date.size() << std::endl;
         throw BitcoinExchangeException("Error !\nInvalid date format.");
     }
     int year = atoi(date.substr(0, 4).c_str());
@@ -211,45 +213,50 @@ void BitcoinExchange::validDateInput(const std::string &date)
     }
 }
 
+float BitcoinExchange::extractInputValue(const std::string& inputLine)
+{
+    std::string value_str = inputLine.substr(inputLine.find("|") + 1);
+    std::stringstream ss(value_str);
+    float value;
+    if (!(ss >> value))
+    {
+        throw BitcoinExchangeException("Error !\nInvalid input value.");
+    }
+    return value;
+}
+
 std::string BitcoinExchange::findBitcoinValue(const std::string &date)
 {
     validDateInput(date);
-    std::map<std::string, float>::iterator it = _BitcoinData.lower_bound(date);
-    if (it != _BitcoinData.end() && it->first == date)
-    {
-        std::stringstream ss;
-        ss << it->second;
-        return ss.str();
-    }
-    else
+    auto it = _BitcoinData.lower_bound(std::make_pair(date, 0.0f));
+    if (it == _BitcoinData.end() || it->first != date)
     {
         if (it != _BitcoinData.begin())
         {
             --it;
-            std::stringstream ss;
-            ss << it->second;
-            return ss.str();
         }
         else
         {
             throw BitcoinExchangeException("Error !\nNo available date found.");
         }
     }
+
+    float bitcoinValue = it->second;
+    std::stringstream ss;
+    ss << (bitcoinValue * getValue(*_InputValue));
+    return ss.str();
 }
 
 void BitcoinExchange::calculate(void)
 {
-    for(std::map<std::string, std::string>::iterator it = _InputData.begin(); it != _InputData.end(); ++it)
+    try
     {
-        try
-        {
-            std::string value = findBitcoinValue(it->first);
-            std::cout << it->first << " | " << value << std::endl;
-        }
-        catch(const BitcoinExchangeException& e)
-        {
-            std::cerr << e.what() << std::endl;
-        }
+        std::string value = findBitcoinValue(*_InputDate);
+        std::cout << *_InputDate << " | " << value << std::endl;
+    }
+    catch(const BitcoinExchangeException& e)
+    {
+        std::cerr << e.what() << std::endl;
     }
 }
 
