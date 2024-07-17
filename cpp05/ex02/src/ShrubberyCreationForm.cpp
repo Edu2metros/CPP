@@ -43,7 +43,7 @@ void ShrubberyCreationForm::execute(Bureucrat const & executor) const
 		throw(NotSignedException());
 	else
 	{
-		std::ofstream file(getTarget() + "_shrubbery");
+		std::ofstream file((getTarget() + "_shrubbery").c_str());
 		if(file.is_open())
 		{
 			file << "       _-_\n    /~~   ~~\\\n /~~         ~~\\\n{               }\n \\  _-     -_  /\n   ~  \\ //  ~\n_- -   | | _- _\n  _ -  | |   -_\n      // \\\n";

@@ -56,7 +56,7 @@ std::string Bureucrat::getName(void) const
 
 void Bureucrat::setName(std::string name)
 {
-	setName(name);
+	const_cast<std::string&>(_name) = name;
 }
 
 int Bureucrat::getGrade(void) const

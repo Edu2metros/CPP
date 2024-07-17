@@ -72,6 +72,7 @@ std::ostream& operator<<(std::ostream& out, const Form &form)
 
 void Form::beSigned(Bureucrat GetulioVargas)
 {
+	// Getulio grade is minor than the grade to sign the form
 	if(GetulioVargas.getGrade() > _gradeSign)
 		throw GradeTooLowException();
 	_signed = true;

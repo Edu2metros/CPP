@@ -2,6 +2,8 @@
 
 #include <iostream>
 #include <string>
+#include <set>
+#include <fstream>
 
 class BitcoinExchange {
 	private:
@@ -12,7 +14,7 @@ class BitcoinExchange {
 	bool checkDebug(void);
 
 	public:
-	BitcoinExchange(void);
+	BitcoinExchange(std::ifstream &file);
 	BitcoinExchange(const BitcoinExchange &other);
 	BitcoinExchange &operator=(const BitcoinExchange &other);
 	~BitcoinExchange(void);
@@ -21,6 +23,9 @@ class BitcoinExchange {
 	{
 		private:
 		std::string _message;
-		public: 
+		public:
+		BitcoinExchangeException(std::string message);
+		virtual const char *what() const throw();
+		virtual ~BitcoinExchangeException() throw();
 	}
 };

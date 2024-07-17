@@ -55,13 +55,11 @@ static AForm *createShrubberyCreationForm(std::string target)
 AForm* Intern::makeForm(std::string formName, std::string target) {
     std::string formNames[3] = {"presidential pardon", "robotomy request", "shrubbery creation"};
     AForm* (*FunctionsRequest[3])(std::string) = {&createPresidentialPardonForm, &createRobotomyRequestForm, &createShrubberyCreationForm};
-    
     for (int i = 0; i < 3; i++) {
         if (formName == formNames[i]) {
             return FunctionsRequest[i](target);
         }
     }
-
     throw std::runtime_error("Form not found! The options are: presidential pardon, robotomy request, shrubbery creation");
 }
 

@@ -5,8 +5,10 @@
 
 int main(void) 
 {
+	// grade too low, same grade and grade ok
 	std::cout << RED << "\nShruberry Tests" << RESET << std::endl;
 	{
+		// grade too low, same grade and grade ok
 		ShrubberyCreationForm a("Palácio_da_Alvorada");
 		std::cout << RED << "\nTest 1" << RESET << std::endl;
 		Bureucrat b("JoseSarney", 146);
@@ -50,6 +52,13 @@ int main(void)
 		std::cout << BLUE << "Temer test" << RESET << std::endl;
 		d.signForm(a);
 		d.executeForm(a);
+	}
+	{
+		// Try to execute a form that was not signed
+		std::cout << RED << "\nTest 2" << RESET << std::endl;
+		ShrubberyCreationForm a("Palácio_da_Alvorada");
+		Bureucrat b("JoseSarney", 1);
+		b.executeForm(a);
 	}
 	return 0;
 }

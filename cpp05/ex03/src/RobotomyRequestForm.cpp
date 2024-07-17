@@ -6,16 +6,12 @@ RobotomyRequestForm::RobotomyRequestForm(std::string target) : AForm("RobotomyRe
 		std::cout << "Construtor for RobotomyRequestForm called" << std::endl;
 }
 
-RobotomyRequestForm::RobotomyRequestForm(const RobotomyRequestForm& other) : AForm(other), _target(other.getTarget())
-{
-}
+RobotomyRequestForm::RobotomyRequestForm(const RobotomyRequestForm& other) : AForm(other), _target(other.getTarget()) {}
 
 RobotomyRequestForm& RobotomyRequestForm::operator=(const RobotomyRequestForm& other)
 {
 	if(this != &other)
-	{
 		const_cast<std::string&>(this->_target) = other.getTarget();
-	}
 	return(*this);
 }
 

@@ -2,63 +2,61 @@
 #                                  GENERICS                                    #
 #------------------------------------------------------------------------------#
 
-# Special variables
-DEFAULT_GOAL: all
-.DELETE_ON_ERROR: $(NAME)
-.PHONY: all bonus clean fclean re debug
+# Setting default target
+.DEFAULT_GOAL := all
+.DELETE_ON_ERROR:
+.PHONY: all clean fclean re debug run gdb
 
-# Hide calls
-export VERBOSE    =    TRUE
+# Variable to hide commands
+VERBOSE ?= TRUE
 ifeq ($(VERBOSE),TRUE)
-    HIDE =
+    HIDE :=
 else
-    HIDE = @
+    HIDE := @
 endif
-
 
 #------------------------------------------------------------------------------#
 #                                VARIABLES                                     #
 #------------------------------------------------------------------------------#
 
 # Compiler and flags
-CC        =    c++
-CFLAGS    =    -g3
-DEBUG_FLAGS = -DDEBUG    # Flag para ativar modo debug (com prints de construtor/destrutor)
-RM        =    rm -rf
+CC         := c++
+CFLAGS     := -g3 -Wall -Wextra -Werror -std=c++98
+DEBUG_FLAGS := -DDEBUG
+RM         := rm -rf
+INCLUDE    := -Iinclude
 
-# Dir and file names
-NAME    =    bureucrat
-SRCS    =    $(wildcard src/*.cpp)
-OBJDIR    =    objs
-OBJS    =    $(SRCS:%.cpp=$(OBJDIR)/%.o)
-INC        = $(wildcard include/*.hpp)
+# Directories and file names
+NAME       := bureu
+SRCDIR     := src
+OBJDIR     := objs
+SRCS       := $(wildcard $(SRCDIR)/*.cpp)
+OBJS       := $(SRCS:$(SRCDIR)/%.cpp=$(OBJDIR)/%.o)
+INC        := $(wildcard include/*.hpp)
 
 # Create object directory if it doesn't exist
-$(OBJS): | $(OBJDIR)
-
 $(OBJDIR):
 	@mkdir -p $(OBJDIR)
-
-$(OBJDIR)/%.o: %.cpp
-	@mkdir -p $(@D)
-	$(CC) $(CFLAGS) -c $< -o $@
 
 #------------------------------------------------------------------------------#
 #                                 TARGETS                                      #
 #------------------------------------------------------------------------------#
 
+# Main target
 all: $(OBJDIR) $(NAME)
 
+# Target to run the executable
 run: all
 	clear && ./$(NAME)
 
-# Generates output file
+# Generates the output file
 $(NAME): $(OBJS)
 	$(HIDE)$(CC) $(CFLAGS) $(OBJS) -o $@
 
-# Compiles sources into objects (with debug mode if specified)
-$(OBJDIR)/%.o: %.cpp $(INC)
-	$(HIDE)$(CC) $(CFLAGS) $(DEBUG_FLAGS) -c $< -o $@
+# Compiles sources into objects
+$(OBJDIR)/%.o: $(SRCDIR)/%.cpp $(INC)
+	@mkdir -p $(@D)
+	$(HIDE)$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
 
 # Removes objects
 clean:
@@ -71,6 +69,10 @@ fclean: clean
 # Removes objects and executables and remakes
 re: fclean all
 
-# Compile with debug mode (com DEBUG definido)
+# Compile with debug mode
 debug: CFLAGS += $(DEBUG_FLAGS)
-debug: clean all
+debug: re
+
+# Target to run GDB in a new terminal
+gdb:
+	gnome-terminal --maximize -- bash -c "sleep 0.3 && gdb --tui --args ./$(NAME)"

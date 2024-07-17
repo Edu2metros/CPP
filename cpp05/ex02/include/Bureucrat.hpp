@@ -12,6 +12,8 @@
 #include <iostream>
 #include <fstream>
 #include "AForm.hpp"
+#include <cstdlib>
+#include <fstream>
 
 class AForm;
 
