@@ -31,4 +31,23 @@ int main(void)
 			std::cout << b[i] << " ";
 		std::cout << std::endl;
 	}
+	// Test 4 Try to fill an array with an index out of bounds
+	{
+		try
+		{
+			Array<int> a(3);
+			a[0] = 0;
+			a[1] = 1;
+			a[2] = 2;
+			for(unsigned int i = 0; i < a.size(); i++)
+				std::cout << a[i] << " ";
+			std::cout << std::endl;
+			a[3] = 3;
+			std::cout << "this message will not appear" << std::endl;
+		}
+		catch(const std::exception& e)
+		{
+			std::cerr << e.what() << '\n';
+		}
+	}
 }
