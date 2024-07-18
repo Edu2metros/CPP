@@ -9,16 +9,13 @@ bool checkDebug()
 	#endif
 }
 
-Span::Span() : _lenght(0)
-{
-	if (checkDebug())
-		std::cout << "Span default constructor called" << std::endl;
-}
-
-Span::Span(unsigned int n) : _lenght(n)
+Span::Span(int lenght)
 {
 	if (checkDebug())
 		std::cout << "Span parameter constructor called" << std::endl;
+	if(lenght <= 0)
+		throw Span::LengthException("Can't initialize a Span with a length of 0 or less!");
+	_lenght = lenght;
 }
 
 Span::Span(Span const & src) : _lenght(src._lenght)
@@ -44,6 +41,19 @@ Span & Span::operator=(Span const & rhs)
 	return *this;
 }
 
+Span::LengthException::LengthException(std::string msg) : _msg(msg)
+{
+}
+
+Span::LengthException::~LengthException() throw()
+{
+}
+
+const char * Span::LengthException::what() const throw()
+{
+	return _msg.c_str();
+}
+
 const char * Span::NoSpaceException::what() const throw()
 {
 	return "No space left in the Span";
@@ -61,6 +71,15 @@ void Span::addNumber(int n)
 	_lenght--;
 	_numbers.push_back(n);
 }
+
+void Span::addNumber(int *array, int size)
+{
+    if (_length < size)
+        throw Span::NoSpaceException();
+    _length -= size;
+    _numbers.insert(_numbers.end(), array, array + size);
+}
+
 
 void Span::addNumber(std::vector<int>::iterator begin, std::vector<int>::iterator end)
 {

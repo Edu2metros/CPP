@@ -4,14 +4,14 @@ int main(void)
 {
 	//Subject test
 	{
-		Span sp = Span(6);
-		sp.addNumber(2);
-		sp.addNumber(5);
+		Span sp = Span(5);
+		
+		sp.addNumber(6);
 		sp.addNumber(3);
 		sp.addNumber(17);
 		sp.addNumber(9);
 		sp.addNumber(11);
-		//Shortest span: 2 -> 3 - 5
+		//Shortest span: 11 - 9 = 2
 		std::cout << sp.shortestSpan() << std::endl;
 		//Longest span: 17 - 2
 		std::cout << sp.longestSpan() << std::endl;
@@ -19,9 +19,9 @@ int main(void)
 	// My own tests
 	{
 		// Test limit
-		Span sp(1);
 		try
 		{
+			Span sp(1);
 			sp.addNumber(1);
 			sp.addNumber(2);
 		}
@@ -32,9 +32,9 @@ int main(void)
 	}
 	{
 		// Test no span
-		Span sp(1);
 		try
 		{
+			Span sp(1);
 			sp.shortestSpan();
 		}
 		catch (std::exception &e)
@@ -44,9 +44,9 @@ int main(void)
 	}
 	{
 		// Test no range
-		Span sp(1);
 		try
 		{
+			Span sp(1);
 			std::vector<int> v;
 			sp.addNumber(v.begin(), v.end());
 		}
@@ -54,6 +54,41 @@ int main(void)
 		{
 			std::cout << e.what() << std::endl;
 		}
+	}
+	{
+		// try to initialize a Span with a negative number or zero.
+		try
+		{
+			Span sp(0);
+		}
+		catch (std::exception &e)
+		{
+			std::cout << e.what() << std::endl;
+		}
+		try
+		{
+			Span sp(-1);
+		}
+		catch (std::exception &e)
+		{
+			std::cout << e.what() << std::endl;
+		}
+	}
+	{
+		// Test addNumber with vectors parameters
+		Span sp(3);
+		std::vector<int> v;
+		v.push_back(1);
+		v.push_back(5);
+		v.push_back(300);
+		sp.addNumber(v.begin(), v.end());
+		std::cout << sp.longestSpan() << std::endl;
+	}
+	{
+		Test addNumber with array parameters
+		Span sp(3);
+		int array[3] = {1, 5, 300};
+		sp.addNumber(array);
 	}
 	return 0;
 }

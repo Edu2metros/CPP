@@ -13,18 +13,17 @@ class Span
 	std::vector<int> _numbers;
 	public:
 	//Orthodox Canonical Form
-	Span();
-	Span(unsigned int n);
+	Span(int n);
 	Span(Span const & src);
 	~Span();
 	Span & operator=(Span const & rhs);
 
 	//Member functions
-	void addNumber(int n);
+	void addNumber(int lenght);
+	void addNumber(int *array);
 	void addNumber(std::vector<int>::iterator begin, std::vector<int>::iterator end);
 	int shortestSpan();
 	int longestSpan();
-	std::ostream& shortestSpanTwo(std::ostream &out);
 	class NoSpaceException : public std::exception
 	{
 		public:
@@ -33,6 +32,15 @@ class Span
 	class NoSpanException : public std::exception
 	{
 		public:
+		virtual const char * what() const throw();
+	};
+	class LengthException : public std::exception
+	{
+		private:
+		std::string _msg;
+		public:
+		LengthException(std::string msg);
+		~LengthException() throw();
 		virtual const char * what() const throw();
 	};
 };

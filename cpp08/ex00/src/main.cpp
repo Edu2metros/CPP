@@ -5,6 +5,7 @@ int main()
 	std::vector<int> vec;
 	for(int i = 9; i > 0; i --)
 		vec.push_back(i);
+	//try to find the value 1 in the vector
 	try
 	{
 		std::vector<int>::iterator it = easyfind(vec, 1);
@@ -14,6 +15,7 @@ int main()
 	{
 		std::cout << e << std::endl;
 	}
+	// try to find a value inexistent in the vector
 	try
 	{
 		std::vector<int>::iterator it = easyfind(vec, 10);
