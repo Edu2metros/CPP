@@ -9,7 +9,7 @@
 class Span
 {
 	private:
-	unsigned int _lenght;
+	unsigned int _length;
 	std::vector<int> _numbers;
 	public:
 	//Orthodox Canonical Form
@@ -20,7 +20,7 @@ class Span
 
 	//Member functions
 	void addNumber(int lenght);
-	void addNumber(int *array);
+	void addNumber(int *array, unsigned int size);
 	void addNumber(std::vector<int>::iterator begin, std::vector<int>::iterator end);
 	int shortestSpan();
 	int longestSpan();

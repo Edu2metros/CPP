@@ -85,10 +85,11 @@ int main(void)
 		std::cout << sp.longestSpan() << std::endl;
 	}
 	{
-		Test addNumber with array parameters
+		// Test addNumber with array parameters
 		Span sp(3);
 		int array[3] = {1, 5, 300};
-		sp.addNumber(array);
+		sp.addNumber(array, 3);
+		std::cout << sp.longestSpan() << std::endl;
 	}
 	return 0;
 }
