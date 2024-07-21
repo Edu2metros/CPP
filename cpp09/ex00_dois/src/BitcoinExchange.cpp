@@ -95,7 +95,7 @@ void BitcoinExchange::_validLine(std::string line)
 
 void BitcoinExchange::_validDBFile()
 {
-	std::ifstream file("/home/eddos-sa/projects/CPP/cpp09/ex00_dois/files/data.csv");
+	std::ifstream file("files/data.csv");
 	if(!file.is_open() || file.bad() || file.fail())
 		throw BitcoinExchange::BitcoinExchangeException("Invalid DB File");
 	std::string header;
@@ -148,7 +148,6 @@ void BitcoinExchange::_validInputFile(std::string input)
         value.erase(value.find_last_not_of(" \t\n\r\f\v") + 1);
         _BitcoinInput[i++] = std::make_pair(date, value);
     }
-	std::cout << "-----------------" << std::endl;
 }
 
 itMap BitcoinExchange::findDate(std::string date)
