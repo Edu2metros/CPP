@@ -23,9 +23,7 @@ RPN& RPN::operator=(const RPN &rpn)
 {
     printMsg("RPN assignation operator called");
     if (this != &rpn)
-    {
         _stack = rpn._stack;
-    }
     return *this;
 }
 
@@ -57,11 +55,6 @@ void RPN::operatorStack(int a, int b, char token)
 
 void RPN::calculate(std::string expr)
 {
-    // 1. Split the expression into tokens
-    // 2. For each token
-    // 3. If the token is a number, push it onto the stack
-    // 4. If the token is an operator, pop two numbers from the stack, apply the operator, and push the result back onto the stack
-    
     std::string token;
     std::istringstream iss(expr);
 
@@ -79,7 +72,6 @@ void RPN::calculate(std::string expr)
         }
         else
             _stack.push(atoi(token.c_str()));
-        
     }
     std::cout << _stack.top() << std::endl;
 }
