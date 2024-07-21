@@ -9,11 +9,14 @@
 #include <cstdlib>
 #include <vector>
 #include <iomanip>
+#include <algorithm>
+
+typedef std::map<int, std::pair<std::string, std::string> >::const_iterator itMap;
 
 
 class BitcoinExchange {
 	private:
-	std::map<std::string, std::string> _BitcoinDB; 
+	std::map<int, std::pair<std::string, std::string> >_BitcoinDB; 
     std::map<int, std::pair<std::string, std::string> > _BitcoinInput;
 
 	void _printMsg(std::string msg); 
@@ -28,7 +31,9 @@ class BitcoinExchange {
 	BitcoinExchange(BitcoinExchange const &src);
 	BitcoinExchange &operator=(BitcoinExchange const &src);
 	~BitcoinExchange();
+	itMap findDate(std::string date);
 	void convert(std::string input);
+	void findValue(std::string value);
 
 	class BitcoinExchangeException : public std::exception
 	{
