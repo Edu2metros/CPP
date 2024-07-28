@@ -12,14 +12,16 @@
 class PmergeMe {
 
     private:
+        int _odd;
         std::vector<int> _v1;
-        std::vector<int> _v2;
-        std::vector<int> _v3;
+        std::vector<std::pair<int, int> > _pairs;
+        std::vector<int> _first, _second;
 
-        std::deque<int> _d1;
-        std::deque<int> _d2;
-        std::deque<int> _d3;
-    
+        void _makePair(void);
+        void _separate(void);
+        void _jacobsthal(void);
+        void _sort(void);
+
     public:
         //Ortdohox Canonical Form
         PmergeMe(int argc, char **argv);
@@ -29,5 +31,8 @@ class PmergeMe {
         
         // Methods
         void printMsg(std::string msg);
+        void run(void);
+
+
         void run2(void);
 };

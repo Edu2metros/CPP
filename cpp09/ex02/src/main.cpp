@@ -28,6 +28,6 @@ int main(int argc, char **argv)
 
 	valid(argc, argv);
 	PmergeMe sort(argc, argv);
-	sort.run2();
+	sort.run();
 	return 0;
 }
