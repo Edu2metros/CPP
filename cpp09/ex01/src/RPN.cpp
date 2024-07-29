@@ -6,6 +6,7 @@ void printMsg(T msg)
     #ifdef DEBUG
         std::cout << msg << std::endl;
     #endif
+	(void)msg;
 }
 
 RPN::RPN(void)
@@ -63,7 +64,7 @@ void RPN::calculate(std::string expr)
         if (token == "+" || token == "-" || token == "*" || token == "/")
         {
             if (_stack.size() < 2)
-                throw RPNException("Error: not enough values in the stack");
+                throw RPNException("Error: Invalid expression");
             int a = _stack.top();
             _stack.pop();
             int b = _stack.top();

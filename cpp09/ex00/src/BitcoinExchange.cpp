@@ -5,6 +5,7 @@ void BitcoinExchange::_printMsg(std::string msg)
 	#ifdef DEBUG
 		std::cout << msg << std::endl;
 	#endif
+	(void)msg;
 }
 
 BitcoinExchange::BitcoinExchange()
@@ -57,13 +58,9 @@ bool BitcoinExchange::_tableMonth(int month, int day, int year)
         return (day <= 30);
     case 2:
         if ((year % 4 == 0 && year % 100 != 0) || year % 400 == 0)
-        {
             return (day <= 29);
-        }
         else
-        {
             return (day <= 28);
-        }
     default:
         return false;
     }

@@ -4,6 +4,7 @@ void PmergeMe::printMsg(std::string msg) {
     #ifdef DEBUG
         std::cout << msg << std::endl;
     #endif
+	(void)msg;
 }
 
 PmergeMe::PmergeMe(int argc, char **argv) {
@@ -77,17 +78,21 @@ void PmergeMe::_jacobsthalVector(void)
     jacobsthal.push_back(0);
     if (_second.size() > 0)
         jacobsthal.push_back(1);
+
     while (true)
     {
-        int nextNumber = jacobsthal[jacobsthal.size() - 1] * 2 + jacobsthal[jacobsthal.size() - 2];
-        if (nextNumber >= _second.size())
+        int last = jacobsthal.size() - 1;
+        int nextNumber = jacobsthal[last] * 2 + jacobsthal[last - 1];
+        if (static_cast<std::vector<int>::size_type>(nextNumber) >= _second.size())
             break;
         jacobsthal.push_back(nextNumber);
     }
+
     if (jacobsthal.size() > 1)
         jacobsthal.erase(jacobsthal.begin() + 1);
 
     std::vector<int> insertion;
+
     while (insertion.size() < _second.size())
     {
         if (!jacobsthal.empty())
@@ -173,13 +178,15 @@ void PmergeMe::_jacobsthalDeque(void)
     jacobsthal.push_back(0);
     if (_dsecond.size() > 0)
         jacobsthal.push_back(1);
+
     while (true)
     {
         int nextNumber = jacobsthal[jacobsthal.size() - 1] * 2 + jacobsthal[jacobsthal.size() - 2];
-        if (nextNumber >= _dsecond.size())
+        if (static_cast<std::deque<int>::size_type>(nextNumber) >= _dsecond.size())
             break;
         jacobsthal.push_back(nextNumber);
     }
+
     if (jacobsthal.size() > 1)
         jacobsthal.erase(jacobsthal.begin() + 1);
 
@@ -207,6 +214,7 @@ void PmergeMe::_jacobsthalDeque(void)
         }
     }
 }
+
 
 void PmergeMe::_sortDeque(void)
 {

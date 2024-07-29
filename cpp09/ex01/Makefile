@@ -21,7 +21,7 @@ endif
 
 # Compiler and flags
 CC         := c++
-CFLAGS     := -std=c++98 -g3
+CFLAGS     := -std=c++98 -g3 -Wall -Wextra -Werror
 DEBUG_FLAGS := -DDEBUG
 RM         := rm -rf
 INCLUDE    := -Iinclude
@@ -75,4 +75,4 @@ debug: re
 
 # Target to run GDB in a new terminal
 gdb:
-	gnome-terminal --maximize -- bash -c "sleep 0.3 && gdb --tui --args ./$(NAME)"
+	gnome-terminal --maximize -- bash -c "sleep 0.3 && gdb --tui --args ./$(NAME) "1 2 * 2 / 2 + 5 * 6 - 1 3 * - 4 5 * * 8 /""
