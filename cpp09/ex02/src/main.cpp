@@ -7,7 +7,6 @@ void valid(int argc, char **argv)
 		std::cout << "Usage: " << argv[0] << "[number1] [number2] ... [numberN]" << std::endl;
 		exit(1);
 	}
-	// aceitar o 0
 	for(int i = 1; i < argc; i++)
 	{
 		if(atoi(argv[i]) == 0 && strcmp(argv[i], "0") != 0)
@@ -21,11 +20,6 @@ void valid(int argc, char **argv)
 
 int main(int argc, char **argv)
 {
-	// validação
-	// dividir em dois
-	// merge
-	// imprimir
-
 	valid(argc, argv);
 	PmergeMe sort(argc, argv);
 	sort.run();
